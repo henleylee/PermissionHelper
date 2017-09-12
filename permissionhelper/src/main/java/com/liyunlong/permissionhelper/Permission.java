@@ -10,13 +10,12 @@ import android.Manifest;
  */
 public final class Permission {
 
-    public static final String READ_PHONE_STATE = Manifest.permission.READ_PHONE_STATE;
-
-    public static final String READ_CALENDAR = Manifest.permission.READ_CALENDAR;
-
     public static final String CAMERA = Manifest.permission.CAMERA;
-
     public static final String VIBRATE = Manifest.permission.VIBRATE;
+    public static final String READ_SMS = Manifest.permission.READ_SMS;
+    public static final String MICROPHONE = Manifest.permission.RECORD_AUDIO;
+    public static final String READ_CALENDAR = Manifest.permission.READ_CALENDAR;
+    public static final String READ_PHONE_STATE = Manifest.permission.READ_PHONE_STATE;
 
     public static final String[] GROUP_STORAGE = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,

@@ -8,7 +8,7 @@ import java.util.Collection;
  * @author liyunlong
  * @date 2017/7/31 14:33
  */
-public interface OnRequestResultListener {
+interface OnRequestResultListener {
 
     /**
      * 当权限请求结果返回时调用该方法

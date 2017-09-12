@@ -3,7 +3,7 @@ package com.liyunlong.permissionhelper;
 import java.util.List;
 
 /**
- * 权限请求回调
+ * 权限请求结果回调
  *
  * @author liyunlong
  * @date 2017/7/31 14:24
