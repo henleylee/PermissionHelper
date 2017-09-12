@@ -2,9 +2,10 @@
 
 ## 介绍 ##
 Android 6.0，代号棉花糖，自发布伊始，其主要的特征运行时权限就很受关注。因为这一特征不仅改善了用户对于应用的使用体验，还使得应用开发者在实践开发中需要做出改变。
-随着Android 6.0发布以及普及，我们开发者所要应对的主要就是新版本SDK带来的一些变化，首先关注的就是权限机制的变化。对于6.0的几个主要的变化，查看查看官网的这篇文章http://developer.android.com/intl/zh-cn/about/versions/marshmallow/android-6.0-changes.html，其中当然包含Runtime Permissions。
+随着Android 6.0发布以及普及，我们开发者所要应对的主要就是新版本SDK带来的一些变化，首先关注的就是权限机制的变化。
+Android 6.0(API 级别 23)除了提供诸多新特性和功能外，还对系统和 API 行为做出了各种变更。对于[Android 6.0 变更](http://developer.android.com/intl/zh-cn/about/versions/marshmallow/android-6.0-changes.html)，包含Runtime Permissions。
 在6.0以前的系统，都是权限一刀切的处理方式，只要用户安装，Manifest申请的权限都会被赋予，并且安装后权限也撤销不了。
-从棉花糖开始，Android系统引入了新的权限机制，即运行时权限。新的权限机制更好的保护了用户的隐私，Google将权限分为两类，一类是Normal Permissions，这类权限一般不涉及用户隐私，是不需要用户进行授权的，比如手机震动、访问网络等；另一类是Dangerous Permission，一般是涉及到用户隐私的，需要用户进行授权，比如读取sdcard、访问通讯录等。
+从Android 6.0开始，Android系统引入了新的权限机制，即运行时权限。新的权限机制更好的保护了用户的隐私，Google将权限分为两类，一类是[Normal Permissions](http://developer.android.com/intl/zh-cn/guide/topics/security/normal-permissions.html)，这类权限一般不涉及用户隐私，是不需要用户进行授权的，比如手机震动、访问网络等；另一类是Dangerous Permission，一般是涉及到用户隐私的，需要用户进行授权，比如读取sdcard、访问通讯录等。
 
 ## 权限的分组 ##
 
@@ -15,7 +16,7 @@ Android中有很多权限，但并非所有的权限都是敏感权限，于是6
  * 其他权限（一般很少用到）
 
 #### 正常权限： ####
-###### [正常权限](http://developer.android.com/intl/zh-cn/guide/topics/security/normal-permissions.html)具有如下的几个特点 ######
+###### 正常权限具有如下的几个特点 ######
  * 对用户隐私没有较大影响或者不会打来安全问题。
  * 安装后就赋予这些权限，不需要显示提醒用户，用户也不能取消这些权限。
 
@@ -69,7 +70,7 @@ android.permission.UNINSTALL_SHORTCUT
  * SMS
  * STORAGE
 
-各个权限分组与其具体的权限，具体如下：
+###### 各个权限分组与其具体的权限，具体如下： ######
 ```
 group:com.google.android.gms.permission.CAR_INFORMATION
   permission:com.google.android.gms.permission.CAR_VENDOR_EXTENSION
@@ -120,6 +121,9 @@ group:android.permission-group.SMS
   permission:android.permission.SEND_SMS
   permission:android.permission.READ_CELL_BROADCASTS
 
+```
+###### 未进行分组的权限，具体如下： ######
+```
 ungrouped:
   permission:com.huawei.pushagent.permission.RICHMEDIA_PROVIDER
   permission:com.huawei.permission.ACCESS_FM

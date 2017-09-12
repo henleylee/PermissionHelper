@@ -1,4 +1,5 @@
 # PermissionHelper-master —— Android 6.0 运行时权限管理
+从Android 6.0开始，Android系统引入了新的权限机制，即运行时权限。具体请查看[运行时权限的变化及特点](https://github.com/lyl873825813/PermissionHelper-master/blob/master/Permission.md)
 
 ## 特性 ##
 * 链式调用，一句话申请权限；
