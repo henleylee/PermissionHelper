@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="25dp">
+
+    <Button
+        android:id="@+id/request_in_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="在Activity中请求权限"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/request_in_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="在Fragment中请求权限"
+        android:textAllCaps="false" />
+
+</LinearLayout>
