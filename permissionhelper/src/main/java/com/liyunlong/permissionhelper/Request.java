@@ -3,6 +3,8 @@ package com.liyunlong.permissionhelper;
 import java.util.Collection;
 
 /**
+ * 权限请求接口
+ *
  * @author liyunlong
  * @date 2017/7/31 11:44
  */
