@@ -1,5 +1,5 @@
-# PermissionHelper-master —— Android 6.0 运行时权限管理
-从Android 6.0开始，Android系统引入了新的权限机制，即运行时权限。具体请查看[运行时权限的变化及特点](https://github.com/lyl873825813/PermissionHelper-master/blob/master/Permission.md)
+# PermissionHelper —— Android 6.0 运行时权限管理
+从Android 6.0开始，Android系统引入了新的权限机制，即运行时权限。具体请查看[运行时权限的变化及特点](./Permission.md)
 
 ## 特性 ##
 * 链式调用，一句话申请权限；
@@ -8,6 +8,10 @@
 * 支持`OnPrepareListener`权限请求准备监听；
 * 支持`OnPermissionsCallback`权限请求结果回调；
 * 对于某个被拒绝的权限，区分是否勾选了“不再询问”。
+
+## APK Demo ##
+
+下载 [APK-Demo](https://github.com/HenleyLee/PermissionHelper/raw/master/app/app-release.apk)
 
 ## 类介绍 ##
 #### OnPrepareListener(权限请求准备监听)： ####
@@ -111,7 +115,7 @@
 
 ## 使用方法 ##
 
-[Permission](https://github.com/lyl873825813/PermissionHelper-master/blob/master/permissionhelper/src/main/java/com/liyunlong/permissionhelper/Permission.java)封装了一些常用权限
+[Permission](./Permission.java)封装了一些常用权限
 
 #### 在Activity中使用： ####
 ```java
