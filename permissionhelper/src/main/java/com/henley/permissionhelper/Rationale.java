@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 /**
  * 提供给用户选择权限请求如何进行的工具类接口(必须且只能调用其中的一个方法)
@@ -8,7 +8,7 @@ package com.liyunlong.permissionhelper;
  * <li>{@link #cancel()}表示取消请求
  * </ul>
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/31 13:41
  */
 public interface Rationale {

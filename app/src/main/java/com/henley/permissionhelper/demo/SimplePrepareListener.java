@@ -1,14 +1,14 @@
-package com.liyunlong.permissionhelper.demo;
+package com.henley.permissionhelper.demo;
 
 import android.content.Context;
 
-import com.liyunlong.permissionhelper.OnPrepareListener;
-import com.liyunlong.permissionhelper.Rationale;
+import com.henley.permissionhelper.OnPrepareListener;
+import com.henley.permissionhelper.Rationale;
 
 import java.util.List;
 
 /**
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/31 15:34
  */
 public class SimplePrepareListener implements OnPrepareListener {

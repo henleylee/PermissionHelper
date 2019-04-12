@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper.demo;
+package com.henley.permissionhelper.demo;
 
 import android.Manifest;
 import android.app.AlarmManager;
@@ -53,7 +53,7 @@ import java.util.concurrent.TimeUnit;
  * <li>得到{@link CrashHandler}实例后调用{@link CrashHandler#upload(boolean)}上传崩溃日志文件
  * </ul>
  *
- * @author liyunlong
+ * @author Henley
  * @date 2016/6/21 10:59
  */
 public class CrashHandler implements UncaughtExceptionHandler {

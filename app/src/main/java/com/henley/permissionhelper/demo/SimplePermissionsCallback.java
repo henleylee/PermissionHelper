@@ -1,18 +1,18 @@
-package com.liyunlong.permissionhelper.demo;
+package com.henley.permissionhelper.demo;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
-import com.liyunlong.permissionhelper.OnPermissionsCallback;
-import com.liyunlong.permissionhelper.PermissionHelper;
-import com.liyunlong.permissionhelper.Rationale;
+import com.henley.permissionhelper.OnPermissionsCallback;
+import com.henley.permissionhelper.PermissionHelper;
+import com.henley.permissionhelper.Rationale;
 
 import java.util.List;
 
 /**
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/31 15:48
  */
 public class SimplePermissionsCallback implements OnPermissionsCallback {

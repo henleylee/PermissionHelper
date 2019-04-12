@@ -1,11 +1,11 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import android.Manifest;
 
 /**
  * 常用权限
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/9/12 14:05
  */
 public final class Permission {

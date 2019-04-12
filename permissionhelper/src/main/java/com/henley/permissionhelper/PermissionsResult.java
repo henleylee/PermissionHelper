@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,7 +14,7 @@ import java.util.List;
  * <li>{@link #isAnyPermissionNeverAskAgain()}返回用户是否对请求的某一个或多个权限选择了不再询问
  * </ul>
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/27 18:01
  * @see PermissionGranted
  * @see PermissionDenied

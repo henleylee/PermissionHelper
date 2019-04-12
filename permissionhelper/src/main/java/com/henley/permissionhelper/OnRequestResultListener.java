@@ -1,11 +1,11 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import java.util.Collection;
 
 /**
  * 权限请求结果监听
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/31 14:33
  */
 interface OnRequestResultListener {

@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * 权限请求
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/27 17:55
  */
 public final class PermissionRequest implements Request<PermissionRequest>, Rationale, OnRequestResultListener {

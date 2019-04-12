@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper.demo;
+package com.henley.permissionhelper.demo;
 
 
 import android.app.FragmentManager;
@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * 在Fragment中请求权限
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/28 15:54
  */
 public class FragmentActivity extends AppCompatActivity {

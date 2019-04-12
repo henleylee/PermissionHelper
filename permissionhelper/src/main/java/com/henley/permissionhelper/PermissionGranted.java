@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import android.support.annotation.NonNull;
 
@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
  * <li>{@link #getPermissionName()}返回授予的权限名称
  * </ul>
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/27 17:45
  */
 final class PermissionGranted {

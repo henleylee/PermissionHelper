@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper.demo;
+package com.henley.permissionhelper.demo;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.liyunlong.permissionhelper.PermissionHelper;
+import com.henley.permissionhelper.PermissionHelper;
 
 /**
  * 在Activity中请求权限
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/28 11:59
  */
 public class PermissionActivity extends AppCompatActivity implements View.OnClickListener {

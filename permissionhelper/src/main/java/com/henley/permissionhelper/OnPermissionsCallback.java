@@ -1,11 +1,11 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import java.util.List;
 
 /**
  * 权限请求结果回调
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/31 14:24
  */
 public interface OnPermissionsCallback {

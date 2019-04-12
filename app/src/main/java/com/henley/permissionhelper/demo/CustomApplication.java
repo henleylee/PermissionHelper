@@ -1,11 +1,11 @@
-package com.liyunlong.permissionhelper.demo;
+package com.henley.permissionhelper.demo;
 
 import android.app.Application;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/31 9:56
  */
 public class CustomApplication extends Application {

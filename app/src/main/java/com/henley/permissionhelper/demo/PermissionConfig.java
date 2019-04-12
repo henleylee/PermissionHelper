@@ -1,11 +1,11 @@
-package com.liyunlong.permissionhelper.demo;
+package com.henley.permissionhelper.demo;
 
 import android.Manifest;
 
 import java.util.HashMap;
 
 /**
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/28 13:39
  */
 public class PermissionConfig {

@@ -1,11 +1,11 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import java.util.List;
 
 /**
  * 权限请求准备监听
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/31 14:20
  */
 public interface OnPrepareListener {

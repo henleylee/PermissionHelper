@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import android.support.annotation.NonNull;
 
@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
  * <li>{@link #isNeverAskAgain()}返回用户是否选择不再询问
  * </ul>
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/27 17:43
  */
 final class PermissionDenied {

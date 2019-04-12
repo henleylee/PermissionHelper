@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper.demo;
+package com.henley.permissionhelper.demo;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/28 14:46
  */
 public class PermissionRationaleDialog extends Dialog implements View.OnClickListener {

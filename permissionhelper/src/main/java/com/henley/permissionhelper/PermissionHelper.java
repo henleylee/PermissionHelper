@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 权限请求助手
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/27 15:58
  */
 public class PermissionHelper {

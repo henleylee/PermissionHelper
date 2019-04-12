@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper;
+package com.henley.permissionhelper;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
@@ -14,7 +14,7 @@ import java.util.LinkedList;
 /**
  * 用于权限请求的{@link Fragment}
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/27 19:07
  */
 public final class PermissionsFragment extends Fragment {

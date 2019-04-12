@@ -1,4 +1,4 @@
-package com.liyunlong.permissionhelper.demo;
+package com.henley.permissionhelper.demo;
 
 import android.Manifest;
 import android.app.Fragment;
@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.liyunlong.permissionhelper.PermissionHelper;
+import com.henley.permissionhelper.PermissionHelper;
 
 /**
  * 在Fragment中请求权限
  *
- * @author liyunlong
+ * @author Henley
  * @date 2017/7/28 11:59
  */
 public class PermissionFragment extends Fragment implements View.OnClickListener {
