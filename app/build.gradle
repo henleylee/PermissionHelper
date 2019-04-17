@@ -42,5 +42,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation project(':permissionhelper')
+//    implementation project(':permissionhelper')
+    implementation 'com.henley.permissionhelper:permissionhelper:1.0.0'
 }
