@@ -9,7 +9,15 @@
 * 支持`OnPermissionsCallback`权限请求结果回调；
 * 对于某个被拒绝的权限，区分是否勾选了“不再询问”。
 
-## APK Demo ##
+## Download ##
+### Gradle ###
+```gradle
+dependencies {
+    implementation 'com.henley.permissionhelper:permissionhelper:1.0.0'
+}
+```
+
+### APK Demo ###
 
 下载 [APK-Demo](https://github.com/HenleyLee/PermissionHelper/raw/master/app/app-release.apk)
 
