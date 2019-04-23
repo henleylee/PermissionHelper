@@ -19,9 +19,10 @@ def siteUrl = 'https://github.com/HenleyLee/PermissionHelper'
 
 publish {
     userOrg = 'henleylee'
-    groupId = 'com.henley.permissionhelper'
+    groupId = 'com.henley.android'
     artifactId = 'permissionhelper'
     publishVersion = '1.0.0'
-    desc = 'Android 6.0 运行时权限管理.'
+    uploadName = 'PermissionHelper'
+    desc = 'Android 6.0 运行时权限管理。'
     website = siteUrl
 }
