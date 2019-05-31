@@ -38,8 +38,7 @@ public final class Permission {
 
     public static final String[] GROUP_CONTACTS = new String[]{
             Manifest.permission.READ_CONTACTS,
-            Manifest.permission.WRITE_CONTACTS,
-            Manifest.permission.GET_ACCOUNTS
+            Manifest.permission.WRITE_CONTACTS
     };
 
     public static final String[] GROUP_MICROPHONE = new String[]{

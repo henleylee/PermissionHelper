@@ -12,7 +12,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,12 +38,12 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
     private WeakReference<Activity> activity;
     private int mRequestCode;
     private boolean isDebugMode;
-    private Collection<String> mPermissions;
     private OnPrepareListener mPrepareListener;
     private OnPermissionsCallback mCallback;
     private boolean isContinueRequest;
     private final PermissionsResult mPermissionsResult;
     private final Object permissionLock = new Object();
+    private final List<String> mPermissions = new ArrayList<>();
 
     PermissionRequest(Object object) {
         if (object instanceof Activity) {
@@ -75,7 +74,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      */
     @Override
     public PermissionRequest permission(String permission) {
-        this.mPermissions = Collections.singletonList(permission);
+        this.mPermissions.add(permission);
         return this;
     }
 
@@ -84,7 +83,9 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      */
     @Override
     public PermissionRequest permissions(String... permissions) {
-        this.mPermissions = Arrays.asList(permissions);
+        if (permissions != null && permissions.length > 0) {
+            this.mPermissions.addAll(Arrays.asList(permissions));
+        }
         return this;
     }
 
@@ -93,7 +94,6 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      */
     @Override
     public PermissionRequest permissions(String[]... permissions) {
-        mPermissions = new ArrayList<>();
         for (String[] permissionArray : permissions) {
             mPermissions.addAll(Arrays.asList(permissionArray));
         }
@@ -105,7 +105,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      */
     @Override
     public PermissionRequest permissions(Collection<String> permissions) {
-        this.mPermissions = permissions;
+        this.mPermissions.addAll(permissions);
         return this;
     }
 
@@ -144,7 +144,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
         if (activity.get() == null) {
             return;
         }
-        if (mPermissions == null || mPermissions.isEmpty()) {
+        if (mPermissions.isEmpty()) {
             printLog("需要请求的权限为空");
             return;
         }
@@ -159,7 +159,8 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
                 callbackPermissionsResult();
                 printLog("需要请求的所有权限都已被授予，不需要请求权限");
             } else {
-                this.mPermissions = permissions;
+                this.mPermissions.clear();
+                this.mPermissions.addAll(permissions);
                 if (mPrepareListener != null) {
                     mPrepareListener.onPermissionsPrepareRequest(mRequestCode, permissions, this);
                 } else {
@@ -182,7 +183,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
         }
         PermissionsFragment permissionsFragment = getPermissionsFragment(activity.get());
         permissionsFragment.setResultListener(this);
-        String[] permissions = mPermissions.toArray(new String[mPermissions.size()]);
+        String[] permissions = mPermissions.toArray(new String[0]);
         permissionsFragment.requestPermissions(mRequestCode, permissions);
         printLog("开始进行权限请求...");
     }
@@ -190,10 +191,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
     @Override
     public void cancel() {
         if (isContinueRequest) {
-            if (mPermissions != null) {
-                mPermissions.clear();
-                mPermissions = null;
-            }
+            mPermissions.clear();
             if (mPermissionsResult != null) {
                 mPermissionsResult.clear();
             }
@@ -280,7 +278,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
             if (permissions == null || permissions.isEmpty()) {
                 return;
             }
-            if (mPermissions == null || mPermissions.isEmpty()) {
+            if (mPermissions.isEmpty()) {
                 return;
             }
             mPermissions.removeAll(permissions);
@@ -331,7 +329,9 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
                 builder.append("[").append(LINE_SEPARATOR);
                 if (!collection.isEmpty()) {
                     for (Object permission : collection) {
-                        builder.append(ITEM_INDENT + permission.toString()).append(LINE_SEPARATOR);
+                        builder.append(ITEM_INDENT)
+                                .append(permission.toString())
+                                .append(LINE_SEPARATOR);
                     }
                 }
                 builder.append("]");
@@ -343,7 +343,8 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
                 grantedBuilder.append("[").append(LINE_SEPARATOR);
                 if (!grantedPermissions.isEmpty()) {
                     for (PermissionGranted permission : grantedPermissions) {
-                        grantedBuilder.append(ITEM_INDENT + permission.getPermissionName())
+                        grantedBuilder.append(ITEM_INDENT)
+                                .append(permission.getPermissionName())
                                 .append(LINE_SEPARATOR);
                     }
                 }
@@ -353,8 +354,11 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
                 deniedBuilder.append("[").append(LINE_SEPARATOR);
                 if (!deniedPermissions.isEmpty()) {
                     for (PermissionDenied permission : deniedPermissions) {
-                        deniedBuilder.append(ITEM_INDENT + permission.getPermissionName())
-                                .append("(是否不再询问：" + permission.isNeverAskAgain() + ")")
+                        deniedBuilder.append(ITEM_INDENT)
+                                .append(permission.getPermissionName())
+                                .append("(是否不再询问：")
+                                .append(permission.isNeverAskAgain())
+                                .append(")")
                                 .append(LINE_SEPARATOR);
                     }
                 }
@@ -368,4 +372,5 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
             }
         }
     }
+
 }
