@@ -79,7 +79,6 @@ group:com.google.android.gms.permission.CAR_INFORMATION
 
 group:android.permission-group.CONTACTS
   permission:android.permission.WRITE_CONTACTS
-  permission:android.permission.GET_ACCOUNTS
   permission:android.permission.READ_CONTACTS
 
 group:android.permission-group.PHONE
@@ -222,3 +221,4 @@ WRITE_EXTERNAL_STORAGE/READ_EXTERNAL_STORAGE这两个权限和外置存储（即
 
 1. [Working with System Permissions](http://developer.android.com/intl/zh-cn/training/permissions/index.html)
 2. [Permissions Best Practices](http://developer.android.com/intl/zh-cn/training/permissions/best-practices.html#testing)
+

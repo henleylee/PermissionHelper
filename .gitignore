@@ -1,8 +1,5 @@
 #the beginning of .gitignore
 
-# Built application files
-*.ap_
-
 # Files for the Dalvik VM
 *.dex
 
