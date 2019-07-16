@@ -13,7 +13,7 @@
 ### Gradle ###
 ```gradle
 dependencies {
-    implementation 'com.henley.android:permissionhelper:1.0.1'
+    implementation 'com.henley.android:permissionhelper:1.0.2'
 }
 ```
 
