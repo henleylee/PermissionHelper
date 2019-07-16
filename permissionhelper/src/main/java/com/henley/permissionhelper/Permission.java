@@ -24,8 +24,7 @@ public final class Permission {
 
     public static final String[] GROUP_LOCATION = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
     public static final String[] GROUP_CALENDAR = new String[]{
