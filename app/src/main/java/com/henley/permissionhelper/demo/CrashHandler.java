@@ -15,9 +15,10 @@ import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.annotation.RequiresPermission;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.RequiresPermission;
 
 import org.json.JSONArray;
 import org.json.JSONException;

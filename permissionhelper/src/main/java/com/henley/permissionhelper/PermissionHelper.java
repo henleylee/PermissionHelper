@@ -7,14 +7,16 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,25 +27,24 @@ import java.util.List;
  */
 public class PermissionHelper {
 
-
     /**
      * 静态方法(创建{@link PermissionRequest}实例)
      */
-    public static PermissionRequest with(Activity activity) {
+    public static PermissionRequest with(@NonNull Activity activity) {
         return new PermissionRequest(activity);
     }
 
     /**
      * 静态方法(创建{@link PermissionRequest}实例)
      */
-    public static PermissionRequest with(android.app.Fragment fragment) {
+    public static PermissionRequest with(@NonNull android.app.Fragment fragment) {
         return new PermissionRequest(fragment);
     }
 
     /**
      * 静态方法(创建{@link PermissionRequest}实例)
      */
-    public static PermissionRequest with(android.support.v4.app.Fragment fragment) {
+    public static PermissionRequest with(@NonNull Fragment fragment) {
         return new PermissionRequest(fragment);
     }
 
@@ -129,7 +130,7 @@ public class PermissionHelper {
      * @return 指定的权限集中的权限是否都被授予
      */
     public static boolean checkAllPermissionsGranted(Context context, String permissions) {
-        return checkAllPermissionsGranted(context, Arrays.asList(permissions));
+        return checkAllPermissionsGranted(context, Collections.singletonList(permissions));
     }
 
     /**

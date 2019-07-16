@@ -22,7 +22,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly "com.android.support:appcompat-v7:$supportVersion"
+    compileOnly 'androidx.appcompat:appcompat:1.0.2'
 }
 
 apply from: '../gradle/bintray.gradle'

@@ -1,5 +1,7 @@
 package com.henley.permissionhelper;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,14 +69,14 @@ final class PermissionsResult {
     /**
      * 添加被授予的权限
      */
-    boolean addGrantedPermission(PermissionGranted response) {
+    boolean addGrantedPermission(@NonNull PermissionGranted response) {
         return grantedPermissions.add(response);
     }
 
     /**
      * 添加被拒绝的权限
      */
-    boolean addDeniedPermission(PermissionDenied response) {
+    boolean addDeniedPermission(@NonNull PermissionDenied response) {
         return deniedPermissions.add(response);
     }
 

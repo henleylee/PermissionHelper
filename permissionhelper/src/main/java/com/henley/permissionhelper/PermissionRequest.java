@@ -2,9 +2,10 @@ package com.henley.permissionhelper;
 
 import android.app.Activity;
 import android.app.FragmentManager;
-import android.support.annotation.IntDef;
-import android.support.v4.app.Fragment;
 import android.util.Log;
+
+import androidx.annotation.IntDef;
+import androidx.fragment.app.Fragment;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -51,7 +52,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
         } else if (object instanceof android.app.Fragment) {
             Activity activity = ((android.app.Fragment) object).getActivity();
             this.activity = new WeakReference<>(activity);
-        } else if (object instanceof android.support.v4.app.Fragment) {
+        } else if (object instanceof Fragment) {
             Activity activity = ((Fragment) object).getActivity();
             this.activity = new WeakReference<>(activity);
         } else {

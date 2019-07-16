@@ -3,8 +3,8 @@ package com.henley.permissionhelper.demo;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * 在Fragment中请求权限

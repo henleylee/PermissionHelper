@@ -1,6 +1,6 @@
 package com.henley.permissionhelper;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * 授予的权限信息
