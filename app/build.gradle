@@ -43,5 +43,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
 //    implementation project(':permissionhelper')
-    implementation 'com.henley.android:permissionhelper:1.0.2'
+//    implementation 'com.henley.android:permissionhelper:1.0.3'
 }

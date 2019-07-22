@@ -2,10 +2,12 @@ package com.henley.permissionhelper.demo;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import androidx.appcompat.app.AlertDialog;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.henley.permissionhelper.OnPermissionsCallback;
+import com.henley.permissionhelper.Permission;
 import com.henley.permissionhelper.PermissionHelper;
 import com.henley.permissionhelper.Rationale;
 
@@ -25,12 +27,12 @@ public class SimplePermissionsCallback implements OnPermissionsCallback {
     }
 
     @Override
-    public void onPermissionsGranted(int requestCode, List<String> permissions, int flag) {
+    public void onPermissionsGranted(int requestCode, List<Permission> permissions, int flag) {
         showToast("所有权限都已授予");
     }
 
     @Override
-    public void onPermissionsDenied(int requestCode, List<String> permissions) {
+    public void onPermissionsDenied(int requestCode, List<Permission> permissions) {
         showToast("被拒绝的权限：" + permissions.toString());
         new AlertDialog.Builder(context)
                 .setTitle("温馨提示")
@@ -47,12 +49,17 @@ public class SimplePermissionsCallback implements OnPermissionsCallback {
     }
 
     @Override
-    public void onShowRequestPermissionRationale(int requestCode, List<String> permissions, final Rationale rationale) {
+    public void onShowRequestPermissionRationale(int requestCode, List<Permission> permissions, final Rationale rationale) {
         showToast("被拒绝的权限：" + permissions.toString());
         new AlertDialog.Builder(context)
                 .setTitle("温馨提示")
                 .setMessage("为了您能正常使用所有功能，需要如下权限：" + getDesc(permissions))
-                .setNegativeButton("取消", null)
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        rationale.cancel();
+                    }
+                })
                 .setPositiveButton("去授权", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -63,11 +70,16 @@ public class SimplePermissionsCallback implements OnPermissionsCallback {
                 .show();
     }
 
-    private String getDesc(List<String> permissions) {
+    @Override
+    public void onPermissionsRequestCancel(int requestCode, List<Permission> permissions) {
+        showToast("权限请求被取消");
+    }
+
+    private String getDesc(List<Permission> permissions) {
         int size = permissions.size();
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < size; i++) {
-            builder.append(PermissionConfig.getDesc(permissions.get(i)));
+            builder.append(PermissionConfig.getDesc(permissions.get(i).name));
             if (i < size - 1) {
                 builder.append("、");
             }

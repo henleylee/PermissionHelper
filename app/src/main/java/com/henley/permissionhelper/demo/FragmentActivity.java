@@ -1,10 +1,10 @@
 package com.henley.permissionhelper.demo;
 
-
-import android.app.FragmentManager;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 /**
  * 在Fragment中请求权限
@@ -19,7 +19,7 @@ public class FragmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
                 .add(R.id.framelayout, new PermissionFragment())

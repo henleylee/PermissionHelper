@@ -1,13 +1,15 @@
 package com.henley.permissionhelper.demo;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.henley.permissionhelper.PermissionHelper;
 
@@ -23,13 +25,13 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.layout_permission_permission_request, container, false);
         rootView.findViewById(R.id.permission_single).setOnClickListener(this);
         rootView.findViewById(R.id.permission_multi).setOnClickListener(this);
         TextView tvLocation = (TextView) rootView.findViewById(R.id.permission_location);
         tvLocation.setText("在Fragment中请求权限");
-        tvResult = (TextView) rootView.findViewById(R.id.permission_result);
+        tvResult = rootView.findViewById(R.id.permission_result);
         return rootView;
     }
 

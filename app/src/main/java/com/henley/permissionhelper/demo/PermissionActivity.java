@@ -2,12 +2,14 @@ package com.henley.permissionhelper.demo;
 
 import android.Manifest;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.henley.permissionhelper.PermissionHelper;
+
 
 /**
  * 在Activity中请求权限
@@ -25,9 +27,9 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.layout_permission_permission_request);
         findViewById(R.id.permission_single).setOnClickListener(this);
         findViewById(R.id.permission_multi).setOnClickListener(this);
-        TextView tvLocation = (TextView) findViewById(R.id.permission_location);
+        TextView tvLocation = findViewById(R.id.permission_location);
         tvLocation.setText("在Activity中请求权限");
-        tvResult = (TextView) findViewById(R.id.permission_result);
+        tvResult = findViewById(R.id.permission_result);
     }
 
     @Override
