@@ -28,11 +28,6 @@ interface Request<T extends Request> {
     /**
      * 设置需要请求的权限
      */
-    T permissions(String[]... permissions);
-
-    /**
-     * 设置需要请求的权限
-     */
     T permissions(Collection<String> permissions);
 
     /**

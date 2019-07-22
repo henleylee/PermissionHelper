@@ -1,12 +1,12 @@
 package com.henley.permissionhelper;
 
 import android.annotation.TargetApi;
-import android.app.Fragment;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -25,7 +25,7 @@ public final class PermissionsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true); // //在配置变化的时候将这个fragment保存下来
+        setRetainInstance(true); // 在配置变化的时候将这个fragment保存下来
     }
 
     public void setResultListener(OnRequestResultListener listener) {
@@ -47,12 +47,11 @@ public final class PermissionsFragment extends Fragment {
         }
         Collection<String> grantedPermissions = new LinkedList<>();
         Collection<String> deniedPermissions = new LinkedList<>();
-        for (int i = 0; i < permissions.length; i++) {
-            String permission = permissions[i];
-            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                deniedPermissions.add(permission);
-            } else {
+        for (String permission : permissions) {
+            if (PermissionHelper.hasPermission(getContext(), permission)) {
                 grantedPermissions.add(permission);
+            } else {
+                deniedPermissions.add(permission);
             }
         }
         if (resultListener != null) {

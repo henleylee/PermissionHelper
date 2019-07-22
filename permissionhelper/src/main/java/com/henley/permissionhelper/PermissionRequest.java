@@ -1,11 +1,14 @@
 package com.henley.permissionhelper;
 
-import android.app.Activity;
-import android.app.FragmentManager;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -36,25 +39,24 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
 
     }
 
-    private WeakReference<Activity> activity;
     private int mRequestCode;
     private boolean isDebugMode;
     private OnPrepareListener mPrepareListener;
     private OnPermissionsCallback mCallback;
     private boolean isContinueRequest;
+    private WeakReference<FragmentActivity> mActivity;
+    private Lazy<PermissionsFragment> mLazyFragment;
     private final PermissionsResult mPermissionsResult;
-    private final Object permissionLock = new Object();
+    private final Object mLock = new Object();
     private final List<String> mPermissions = new ArrayList<>();
 
     PermissionRequest(Object object) {
-        if (object instanceof Activity) {
-            this.activity = new WeakReference<>((Activity) object);
-        } else if (object instanceof android.app.Fragment) {
-            Activity activity = ((android.app.Fragment) object).getActivity();
-            this.activity = new WeakReference<>(activity);
+        if (object instanceof FragmentActivity) {
+            this.mActivity = new WeakReference<>((FragmentActivity) object);
+            this.mLazyFragment = getLazySingleton(((FragmentActivity) object).getSupportFragmentManager());
         } else if (object instanceof Fragment) {
-            Activity activity = ((Fragment) object).getActivity();
-            this.activity = new WeakReference<>(activity);
+            this.mActivity = new WeakReference<>(((Fragment) object).getActivity());
+            this.mLazyFragment = getLazySingleton(((Fragment) object).getChildFragmentManager());
         } else {
             throw new IllegalArgumentException(object.getClass().getName() + " is not supported.");
         }
@@ -74,7 +76,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      * 设置需要请求的权限
      */
     @Override
-    public PermissionRequest permission(String permission) {
+    public PermissionRequest permission(@NonNull String permission) {
         this.mPermissions.add(permission);
         return this;
     }
@@ -83,10 +85,8 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      * 设置需要请求的权限
      */
     @Override
-    public PermissionRequest permissions(String... permissions) {
-        if (permissions != null && permissions.length > 0) {
-            this.mPermissions.addAll(Arrays.asList(permissions));
-        }
+    public PermissionRequest permissions(@NonNull String... permissions) {
+        this.mPermissions.addAll(Arrays.asList(permissions));
         return this;
     }
 
@@ -94,18 +94,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      * 设置需要请求的权限
      */
     @Override
-    public PermissionRequest permissions(String[]... permissions) {
-        for (String[] permissionArray : permissions) {
-            mPermissions.addAll(Arrays.asList(permissionArray));
-        }
-        return this;
-    }
-
-    /**
-     * 设置需要请求的权限
-     */
-    @Override
-    public PermissionRequest permissions(Collection<String> permissions) {
+    public PermissionRequest permissions(@NonNull Collection<String> permissions) {
         this.mPermissions.addAll(permissions);
         return this;
     }
@@ -142,7 +131,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      */
     @Override
     public void request() {
-        if (activity.get() == null) {
+        if (mActivity.get() == null) {
             return;
         }
         if (mPermissions.isEmpty()) {
@@ -154,7 +143,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
             callbackPermissionsResult();
             printLog("当前系统版本小于Android 6.0系统，不需要请求权限");
         } else {
-            List<String> permissions = PermissionHelper.findUnGrantedPermissions(activity.get(), mPermissions);// 查找未授予的权限集合
+            List<String> permissions = PermissionHelper.findUnGrantedPermissions(mActivity.get(), mPermissions);// 查找未授予的权限集合
             if (permissions.isEmpty()) { // 判断所有权限是否被授予
                 updatePermissionsAsGranted(permissions);
                 callbackPermissionsResult();
@@ -182,7 +171,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
             }
             isContinueRequest = false;
         }
-        PermissionsFragment permissionsFragment = getPermissionsFragment(activity.get());
+        PermissionsFragment permissionsFragment = mLazyFragment.get();
         permissionsFragment.setResultListener(this);
         String[] permissions = mPermissions.toArray(new String[0]);
         permissionsFragment.requestPermissions(mRequestCode, permissions);
@@ -191,16 +180,13 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
 
     @Override
     public void cancel() {
+        updatePermissionsAsDenied(mPermissions);
         if (isContinueRequest) {
-            mPermissions.clear();
-            if (mPermissionsResult != null) {
-                mPermissionsResult.clear();
+            if (mCallback != null) {
+                mCallback.onPermissionsRequestCancel(mRequestCode, mPermissionsResult.getDeniedPermissions());
             }
-            mPrepareListener = null;
-            mCallback = null;
-            activity.clear();
+            mActivity.clear();
         } else {
-            updatePermissionsAsDenied(mPermissions);
             callbackPermissionsResult();
         }
     }
@@ -216,10 +202,10 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      * 回调权限请求结果
      */
     private void callbackPermissionsResult() {
-        synchronized (permissionLock) {
+        synchronized (mLock) {
             if (mCallback != null) {
                 if (mPermissionsResult.areAllPermissionsGranted()) {
-                    List<String> deniedPermissions = mPermissionsResult.getDeniedPermissionNames();
+                    List<Permission> deniedPermissions = mPermissionsResult.getDeniedPermissions();
                     @PermissionFlag int flag;
                     if (!PermissionHelper.isOverMarshmallow()) {
                         flag = FLAG_NO_NEED;
@@ -228,7 +214,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
                     }
                     mCallback.onPermissionsGranted(mRequestCode, deniedPermissions, flag);
                 } else {
-                    List<String> deniedPermissions = mPermissionsResult.getDeniedPermissionNames();
+                    List<Permission> deniedPermissions = mPermissionsResult.getDeniedPermissions();
                     if (mPermissionsResult.isAnyPermissionNeverAskAgain()) {
                         mCallback.onPermissionsDenied(mRequestCode, deniedPermissions);
                     } else {
@@ -249,7 +235,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      */
     private void updatePermissionsAsGranted(Collection<String> permissions) {
         for (String permission : permissions) {
-            PermissionGranted response = PermissionGranted.from(permission);
+            Permission response = new Permission(permission, true);
             mPermissionsResult.addGrantedPermission(response);
         }
         removeCheckedPermissions(permissions);
@@ -262,8 +248,8 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      */
     private void updatePermissionsAsDenied(Collection<String> permissions) {
         for (String permission : permissions) {
-            boolean showRequestPermissionRationale = PermissionHelper.shouldShowRequestPermissionRationale(activity.get(), permission);
-            PermissionDenied response = PermissionDenied.from(permission, !showRequestPermissionRationale);
+            boolean showRequestPermissionRationale = PermissionHelper.shouldShowRequestPermissionRationale(mActivity.get(), permission);
+            Permission response = new Permission(permission, false, showRequestPermissionRationale);
             mPermissionsResult.addDeniedPermission(response);
         }
         removeCheckedPermissions(permissions);
@@ -275,7 +261,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      * @param permissions 指定的权限集合
      */
     private void removeCheckedPermissions(Collection<String> permissions) {
-        synchronized (permissionLock) {
+        synchronized (mLock) {
             if (permissions == null || permissions.isEmpty()) {
                 return;
             }
@@ -287,32 +273,51 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
     }
 
     /**
-     * 返回用于权限请求的{@link Fragment}对象
+     * 查找用于权限请求的{@link Fragment}对象
      *
-     * @param activity 当前所在{@link Activity}对象
+     * @param fragmentManager {@link FragmentManager}对象
      */
-    private PermissionsFragment getPermissionsFragment(Activity activity) {
-        PermissionsFragment permissionsFragment = findPermissionsFragment(activity);
-        boolean isNewInstance = permissionsFragment == null;
-        if (isNewInstance) {
-            permissionsFragment = new PermissionsFragment();
-            FragmentManager fragmentManager = activity.getFragmentManager();
-            fragmentManager
-                    .beginTransaction()
-                    .add(permissionsFragment, TAG)
-                    .commitAllowingStateLoss();
-            fragmentManager.executePendingTransactions();
-        }
-        return permissionsFragment;
+    private PermissionsFragment findPermissionsFragment(@NonNull final FragmentManager fragmentManager) {
+        return (PermissionsFragment) fragmentManager.findFragmentByTag(TAG);
+    }
+
+    @NonNull
+    private Lazy<PermissionsFragment> getLazySingleton(@NonNull final FragmentManager fragmentManager) {
+        return new Lazy<PermissionsFragment>() {
+
+            private PermissionsFragment rxPermissionsFragment;
+
+            @Override
+            public synchronized PermissionsFragment get() {
+                if (rxPermissionsFragment == null) {
+                    rxPermissionsFragment = getPermissionsFragment(fragmentManager);
+                }
+                return rxPermissionsFragment;
+            }
+
+        };
     }
 
     /**
-     * 查找用于权限请求的{@link Fragment}对象
+     * 返回用于权限请求的{@link Fragment}对象
      *
-     * @param activity 当前所在{@link Activity}对象
+     * @param fragmentManager {@link FragmentManager}对象
      */
-    private PermissionsFragment findPermissionsFragment(Activity activity) {
-        return (PermissionsFragment) activity.getFragmentManager().findFragmentByTag(TAG);
+    private PermissionsFragment getPermissionsFragment(@NonNull final FragmentManager fragmentManager) {
+        PermissionsFragment permissionsFragment = findPermissionsFragment(fragmentManager);
+        boolean isNewInstance = permissionsFragment == null;
+        if (isNewInstance) {
+            permissionsFragment = new PermissionsFragment();
+            FragmentTransaction transaction = fragmentManager
+                    .beginTransaction()
+                    .add(permissionsFragment, TAG);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                transaction.commitNow();
+            } else {
+                transaction.commitAllowingStateLoss();
+            }
+        }
+        return permissionsFragment;
     }
 
     /**
@@ -339,39 +344,44 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
                 Log.i(TAG, "需要请求的权限 size = " + collection.size() + " " + builder.toString());
             } else if (object instanceof PermissionsResult) {
                 PermissionsResult result = (PermissionsResult) object;
-                List<PermissionGranted> grantedPermissions = result.getGrantedPermissions();
+                List<Permission> grantedPermissions = result.getGrantedPermissions();
                 StringBuilder grantedBuilder = new StringBuilder();
                 grantedBuilder.append("[").append(LINE_SEPARATOR);
                 if (!grantedPermissions.isEmpty()) {
-                    for (PermissionGranted permission : grantedPermissions) {
+                    for (Permission permission : grantedPermissions) {
                         grantedBuilder.append(ITEM_INDENT)
-                                .append(permission.getPermissionName())
+                                .append(permission.name)
                                 .append(LINE_SEPARATOR);
                     }
                 }
                 grantedBuilder.append("]");
-                List<PermissionDenied> deniedPermissions = result.getDeniedPermissions();
+                List<Permission> deniedPermissions = result.getDeniedPermissions();
                 StringBuilder deniedBuilder = new StringBuilder();
                 deniedBuilder.append("[").append(LINE_SEPARATOR);
                 if (!deniedPermissions.isEmpty()) {
-                    for (PermissionDenied permission : deniedPermissions) {
+                    for (Permission permission : deniedPermissions) {
                         deniedBuilder.append(ITEM_INDENT)
-                                .append(permission.getPermissionName())
+                                .append(permission.name)
                                 .append("(是否不再询问：")
-                                .append(permission.isNeverAskAgain())
+                                .append(!permission.shouldShowRequestPermissionRationale)
                                 .append(")")
                                 .append(LINE_SEPARATOR);
                     }
                 }
                 deniedBuilder.append("]");
-                Log.i(TAG, "授予的权限 size = " + grantedPermissions.size() + " " + grantedBuilder.toString());
-                Log.i(TAG, "拒绝的权限 size = " + deniedPermissions.size() + " " + deniedBuilder.toString());
-                Log.i(TAG, "用户是否授予了所有请求的权限：" + result.areAllPermissionsGranted());
-                Log.i(TAG, "用户是否永久拒绝请求的某一个或多个权限：" + result.isAnyPermissionNeverAskAgain());
+                Log.d(TAG, "授予的权限 size = " + grantedPermissions.size() + " " + grantedBuilder.toString());
+                Log.d(TAG, "拒绝的权限 size = " + deniedPermissions.size() + " " + deniedBuilder.toString());
+                Log.d(TAG, "用户是否授予了所有请求的权限：" + result.areAllPermissionsGranted());
+                Log.d(TAG, "用户是否永久拒绝请求的某一个或多个权限：" + result.isAnyPermissionNeverAskAgain());
             } else {
-                Log.i(TAG, object.toString());
+                Log.d(TAG, object.toString());
             }
         }
+    }
+
+    @FunctionalInterface
+    public interface Lazy<V> {
+        V get();
     }
 
 }

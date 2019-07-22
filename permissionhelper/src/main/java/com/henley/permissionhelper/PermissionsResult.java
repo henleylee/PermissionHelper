@@ -18,13 +18,12 @@ import java.util.List;
  *
  * @author Henley
  * @date 2017/7/27 18:01
- * @see PermissionGranted
- * @see PermissionDenied
+ * @see Permission
  */
 final class PermissionsResult {
 
-    private final List<PermissionGranted> grantedPermissions;
-    private final List<PermissionDenied> deniedPermissions;
+    private final List<Permission> grantedPermissions;
+    private final List<Permission> deniedPermissions;
 
     PermissionsResult() {
         grantedPermissions = new LinkedList<>();
@@ -34,14 +33,14 @@ final class PermissionsResult {
     /**
      * 返回已授予所有权限的集合
      */
-    List<PermissionGranted> getGrantedPermissions() {
+    List<Permission> getGrantedPermissions() {
         return grantedPermissions;
     }
 
     /**
      * 返回已拒绝的所有权限的集合
      */
-    List<PermissionDenied> getDeniedPermissions() {
+    List<Permission> getDeniedPermissions() {
         return deniedPermissions;
     }
 
@@ -57,8 +56,8 @@ final class PermissionsResult {
      */
     boolean isAnyPermissionNeverAskAgain() {
         boolean hasNeverAskAgainAnyPermission = false;
-        for (PermissionDenied denied : deniedPermissions) {
-            if (denied.isNeverAskAgain()) {
+        for (Permission denied : deniedPermissions) {
+            if (!denied.shouldShowRequestPermissionRationale) {
                 hasNeverAskAgainAnyPermission = true;
                 break;
             }
@@ -69,14 +68,14 @@ final class PermissionsResult {
     /**
      * 添加被授予的权限
      */
-    boolean addGrantedPermission(@NonNull PermissionGranted response) {
+    boolean addGrantedPermission(@NonNull Permission response) {
         return grantedPermissions.add(response);
     }
 
     /**
      * 添加被拒绝的权限
      */
-    boolean addDeniedPermission(@NonNull PermissionDenied response) {
+    boolean addDeniedPermission(@NonNull Permission response) {
         return deniedPermissions.add(response);
     }
 
@@ -85,8 +84,8 @@ final class PermissionsResult {
      */
     List<String> getGrantedPermissionNames() {
         List<String> permissions = new ArrayList<>(grantedPermissions.size());
-        for (PermissionGranted permission : grantedPermissions) {
-            permissions.add(permission.getPermissionName());
+        for (Permission permission : grantedPermissions) {
+            permissions.add(permission.name);
         }
         return permissions;
     }
@@ -96,8 +95,8 @@ final class PermissionsResult {
      */
     List<String> getDeniedPermissionNames() {
         List<String> permissions = new ArrayList<>(deniedPermissions.size());
-        for (PermissionDenied permission : deniedPermissions) {
-            permissions.add(permission.getPermissionName());
+        for (Permission permission : deniedPermissions) {
+            permissions.add(permission.name);
         }
         return permissions;
     }

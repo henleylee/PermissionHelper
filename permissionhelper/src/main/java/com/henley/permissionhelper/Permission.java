@@ -1,67 +1,93 @@
 package com.henley.permissionhelper;
 
-import android.Manifest;
+import java.util.List;
 
 /**
- * 常用权限
+ * 权限信息
  *
  * @author Henley
- * @date 2017/9/12 14:05
+ * @date 2019/7/22 16:07
  */
-public final class Permission {
+public class Permission {
 
-    public static final String CAMERA = Manifest.permission.CAMERA;
-    public static final String VIBRATE = Manifest.permission.VIBRATE;
-    public static final String READ_SMS = Manifest.permission.READ_SMS;
-    public static final String MICROPHONE = Manifest.permission.RECORD_AUDIO;
-    public static final String READ_CALENDAR = Manifest.permission.READ_CALENDAR;
-    public static final String READ_PHONE_STATE = Manifest.permission.READ_PHONE_STATE;
+    public final String name;
+    public final boolean granted;
+    public final boolean shouldShowRequestPermissionRationale;
 
-    public static final String[] GROUP_STORAGE = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
+    public Permission(String name, boolean granted) {
+        this(name, granted, false);
+    }
 
-    public static final String[] GROUP_LOCATION = new String[]{
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-    };
+    public Permission(String name, boolean granted, boolean shouldShowRequestPermissionRationale) {
+        this.name = name;
+        this.granted = granted;
+        this.shouldShowRequestPermissionRationale = shouldShowRequestPermissionRationale;
+    }
 
-    public static final String[] GROUP_CALENDAR = new String[]{
-            Manifest.permission.READ_CALENDAR,
-            Manifest.permission.WRITE_CALENDAR
-    };
+    public Permission(List<Permission> permissions) {
+        name = combineName(permissions);
+        granted = combineGranted(permissions);
+        shouldShowRequestPermissionRationale = combineShouldShowRequestPermissionRationale(permissions);
+    }
 
-    public static final String[] GROUP_CAMERA = new String[]{
-            Manifest.permission.CAMERA
-    };
+    @Override
+    @SuppressWarnings("SimplifiableIfStatement")
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    public static final String[] GROUP_CONTACTS = new String[]{
-            Manifest.permission.READ_CONTACTS,
-            Manifest.permission.WRITE_CONTACTS
-    };
+        final Permission that = (Permission) o;
 
-    public static final String[] GROUP_MICROPHONE = new String[]{
-            Manifest.permission.RECORD_AUDIO
-    };
+        if (granted != that.granted) return false;
+        if (shouldShowRequestPermissionRationale != that.shouldShowRequestPermissionRationale)
+            return false;
+        return name.equals(that.name);
+    }
 
-    public static final String[] GROUP_PHONE = new String[]{
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.USE_SIP,
-            Manifest.permission.PROCESS_OUTGOING_CALLS
-    };
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (granted ? 1 : 0);
+        result = 31 * result + (shouldShowRequestPermissionRationale ? 1 : 0);
+        return result;
+    }
 
-    public static final String[] GROUP_SENSORS = new String[]{
-            Manifest.permission.BODY_SENSORS
-    };
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "name='" + name + '\'' +
+                ", granted=" + granted +
+                ", shouldShowRequestPermissionRationale=" + shouldShowRequestPermissionRationale +
+                '}';
+    }
 
-    public static final String[] GROUP_SMS = new String[]{
-            Manifest.permission.SEND_SMS,
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.READ_SMS,
-            Manifest.permission.RECEIVE_WAP_PUSH,
-            Manifest.permission.RECEIVE_MMS
-    };
+    private String combineName(List<Permission> permissions) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < permissions.size(); i++) {
+            builder.append(permissions.get(i).name);
+            if (i < permissions.size() - 1) {
+                builder.append(", ");
+            }
+        }
+        return builder.toString();
+    }
+
+    private Boolean combineGranted(List<Permission> permissions) {
+        for (Permission permission : permissions) {
+            if (!permission.granted) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Boolean combineShouldShowRequestPermissionRationale(List<Permission> permissions) {
+        for (Permission permission : permissions) {
+            if (!permission.shouldShowRequestPermissionRationale) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
