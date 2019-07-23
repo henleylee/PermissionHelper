@@ -7,6 +7,18 @@ Android 6.0(API 级别 23)除了提供诸多新特性和功能外，还对系统
 在6.0以前的系统，都是权限一刀切的处理方式，只要用户安装，Manifest申请的权限都会被赋予，并且安装后权限也撤销不了。
 从Android 6.0开始，Android系统引入了新的权限机制，即运行时权限。新的权限机制更好的保护了用户的隐私，Google将权限分为两类，一类是[Normal Permissions](http://developer.android.com/intl/zh-cn/guide/topics/security/normal-permissions.html)，这类权限一般不涉及用户隐私，是不需要用户进行授权的，比如手机震动、访问网络等；另一类是Dangerous Permission，一般是涉及到用户隐私的，需要用户进行授权，比如读取sdcard、访问通讯录等。
 
+## Download ##
+### Gradle ###
+```gradle
+dependencies {
+    implementation 'com.henley.android:permissionhelper:1.0.3@aar'
+}
+```
+
+### APK Demo ###
+
+下载 [APK-Demo](https://github.com/HenleyLee/PermissionHelper/raw/master/app/app-release.apk)
+
 ## 权限的分组 ##
 
 Android中有很多权限，但并非所有的权限都是敏感权限，于是6.0系统就对权限进行了分类，一般为下述几类

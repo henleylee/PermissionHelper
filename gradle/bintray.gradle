@@ -21,7 +21,7 @@ publish {
     userOrg = 'henleylee'
     groupId = 'com.henley.android'
     artifactId = 'permissionhelper'
-    publishVersion = '1.0.2'
+    publishVersion = '1.0.3'
     uploadName = 'PermissionHelper'
     desc = 'Android 6.0 运行时权限管理。'
     website = siteUrl
