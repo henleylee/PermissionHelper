@@ -1,6 +1,5 @@
 package com.henley.permissionhelper;
 
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.IntDef;
@@ -8,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -171,11 +169,7 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
             }
             isContinueRequest = false;
         }
-        PermissionsFragment permissionsFragment = mLazyFragment.get();
-        permissionsFragment.setResultListener(this);
-        String[] permissions = mPermissions.toArray(new String[0]);
-        permissionsFragment.requestPermissions(mRequestCode, permissions);
-        printLog("开始进行权限请求...");
+        requestPermissionsFromFragment();
     }
 
     @Override
@@ -196,6 +190,17 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
         updatePermissionsAsGranted(grantedPermissions);
         updatePermissionsAsDenied(deniedPermissions);
         callbackPermissionsResult();
+    }
+
+    /**
+     * 通过{@link Fragment}请求权限
+     */
+    private void requestPermissionsFromFragment() {
+        printLog("开始进行权限请求...");
+        PermissionsFragment permissionsFragment = mLazyFragment.get();
+        permissionsFragment.setResultListener(this);
+        String[] permissions = mPermissions.toArray(new String[0]);
+        permissionsFragment.requestPermissions(mRequestCode, permissions);
     }
 
     /**
@@ -285,14 +290,14 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
     private Lazy<PermissionsFragment> getLazySingleton(@NonNull final FragmentManager fragmentManager) {
         return new Lazy<PermissionsFragment>() {
 
-            private PermissionsFragment rxPermissionsFragment;
+            private PermissionsFragment mPermissionsFragment;
 
             @Override
             public synchronized PermissionsFragment get() {
-                if (rxPermissionsFragment == null) {
-                    rxPermissionsFragment = getPermissionsFragment(fragmentManager);
+                if (mPermissionsFragment == null) {
+                    mPermissionsFragment = getPermissionsFragment(fragmentManager);
                 }
-                return rxPermissionsFragment;
+                return mPermissionsFragment;
             }
 
         };
@@ -305,17 +310,12 @@ public final class PermissionRequest implements Request<PermissionRequest>, Rati
      */
     private PermissionsFragment getPermissionsFragment(@NonNull final FragmentManager fragmentManager) {
         PermissionsFragment permissionsFragment = findPermissionsFragment(fragmentManager);
-        boolean isNewInstance = permissionsFragment == null;
-        if (isNewInstance) {
+        if (permissionsFragment == null) {
             permissionsFragment = new PermissionsFragment();
-            FragmentTransaction transaction = fragmentManager
+            fragmentManager
                     .beginTransaction()
-                    .add(permissionsFragment, TAG);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                transaction.commitNow();
-            } else {
-                transaction.commitAllowingStateLoss();
-            }
+                    .add(permissionsFragment, TAG)
+                    .commitNow();
         }
         return permissionsFragment;
     }
